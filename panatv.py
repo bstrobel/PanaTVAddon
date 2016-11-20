@@ -1,7 +1,7 @@
 #!
 #  -*- coding: utf-8 -*-
 from xml.dom.minidom import parseString
-import requests as RQ
+import requests
 import io
 
 
@@ -33,9 +33,11 @@ requestxmlraw = '''<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope
 </s:Envelope>\
 '''
 
+
 def save_xml(xml_text, name='res_xml_doc.xml'):
     with io.open(name, 'wt', encoding='UTF-8') as fd:
             fd.write(xml_text)
+
 
 def get_browse_response(objid, panatv_hostname, starting_index=0, request_count=20):
     req_xml_doc = parseString(requestxmlraw)
@@ -49,7 +51,7 @@ def get_browse_response(objid, panatv_hostname, starting_index=0, request_count=
     request_count_el = req_browse.getElementsByTagName('RequestedCount')[0]
     request_count_el.childNodes[0].data = request_count
     req_xml_str = req_xml_doc.documentElement.toprettyxml()
-    r = RQ.post(panaUrl.format(panatv_hostname), data=req_xml_str, headers=requestheaders)
+    r = requests.post(panaUrl.format(panatv_hostname), data=req_xml_str, headers=requestheaders)
     # print r.text
     # http://stackoverflow.com/questions/9942594/unicodeencodeerror-ascii-codec-cant-encode-character-u-xa0-in-position-20
     content = r.text.encode('UTF-8').strip()
@@ -172,7 +174,7 @@ def get_browse_response(objid, panatv_hostname, starting_index=0, request_count=
 # </DIDL-Lite>
 
 
-def get_listing(parent_id=0, panatv_hostname='COM-MID1'):
+def get_listing(parent_id='0', panatv_hostname='COM-MID1'):
     starting_index = 0
     total_matches = 10000
     container_list = dict()
@@ -185,7 +187,8 @@ def get_listing(parent_id=0, panatv_hostname='COM-MID1'):
         if len(containers) > 0:
             for container in containers:
                 title = container.getElementsByTagNameNS(NS_DC, 'title')[0].childNodes[0].data
-                container_source_type = container.getElementsByTagNameNS(NS_PXN, 'ContainerSourceType')[0].childNodes[0].data
+                container_source_type = container.getElementsByTagNameNS(
+                    NS_PXN, 'ContainerSourceType')[0].childNodes[0].data
                 itemid = container.getAttribute('id')
                 container_list[itemid] = {
                     'title': title,
@@ -232,4 +235,3 @@ def list_all(container_id='0', container_title='root', level=0):
 if __name__ == '__main__':
     list_all()
     print '### done ###'
-

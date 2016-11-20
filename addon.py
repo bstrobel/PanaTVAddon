@@ -58,14 +58,14 @@ def build_url(query):
     
 def mk_file_name(item_props):
     traw = item_props['title'].encode('UTF-8').strip()
-    traw = traw.replace(':', '')
+    traw = traw.replace(':', ' -')
     traw = traw.replace('/', '-')
-    traw = traw.replace('\\', '.')
+    traw = traw.replace('\\', '-')
     traw = traw.replace('"', '')
     traw = traw.replace('*', '#')
     traw = traw.replace('?', '')
-    traw = traw.replace('<', '+')
-    traw = traw.replace('>', '+')
+    traw = traw.replace('<', '=')
+    traw = traw.replace('>', '=')
     traw = traw.replace('|', '+')
     fname = '{0}.{1}'.format(traw, file_ext)
     return os.path.join(record_dir, fname)
