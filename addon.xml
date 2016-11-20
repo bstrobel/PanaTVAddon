@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.panatv"
+       version="2.0.1"
+       name="Panasonic TV"
+       provider-name="Bernd Strobel">
+    <requires>
+        <import addon="xbmc.python" version="2.24.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="addon.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Anzeige von Sendern und Aufnahmen eines Panasonic TV</summary>
+        <description lang="en">Ermoeglicht das Anzeigen von Programmen und Herunterladen von Aufnahmen.</description>
+        <disclaimer lang="en">(C) Bernd Strobel</disclaimer>
+    </extension>
+</addon>
