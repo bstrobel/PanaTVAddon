@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
     <category label="32001">
-        <setting label="32011" type="text"   id="panatv_hostname" default="COM-MID1"/>
-        <setting label="32012" type="folder" id="video_folder" source="auto" option="writeable"/>
+        <setting label="32011" type="text"   id="Panasonic TV Hostname" default="COM-MID1"/>
+        <setting label="32012" type="folder" id="Directory where video files are saved" source="auto" option="writeable"/>
     </category>
 </settings>

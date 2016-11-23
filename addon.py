@@ -36,9 +36,9 @@ param_ctype = 'ctype'
 param_val_ctype_rec = 'rec'
 param_val_ctype_other = 'other'
 
-my_addon = xbmcaddon.Addon()
-record_dir = my_addon.getSetting('video_folder')
-panatv_hostname = my_addon.getSetting('panatv_hostname')
+ptva = xbmcaddon.Addon()
+record_dir = ptva.getSetting('video_folder')
+panatv_hostname = ptva.getSetting('panatv_hostname')
 
 file_ext = 'ts'
 
@@ -123,16 +123,13 @@ def create_listing(lcdir, cparent_id):
     except requests.RequestException as err:
         infodialog = xbmcgui.Dialog()
         infodialog.ok(
-            'Verbindung zu Panasonic TV fehlgeschlagen',
-            '''
-            Verbindung zu Panasonic TV mit Hostnamen {0} fehlgeschlagen.
-            {1}
-            '''.format(panatv_hostname, err))
+            ptva.getLocalizedString(31000).encode('UTF-8'),
+            ptva.getLocalizedString(31001).encode('UTF-8').format(panatv_hostname, err))
         return
     except BaseException as err:
         infodialog = xbmcgui.Dialog()
         infodialog.ok(
-            'Verarbeitung der Daten von Panasonic TV fehlgeschlagen',
+            ptva.getLocalizedString(31007).encode('UTF-8'),
             '''
             {0}
             '''.format(err))
@@ -150,8 +147,8 @@ def create_listing(lcdir, cparent_id):
         li = xbmcgui.ListItem(label=item_props['title'], path=params[param_video_url])
         if params[param_ctype] == param_val_ctype_rec:
             context_menu = [
-                ('Auf Festplatte speichern', 'PlayMedia({0})'.format(build_url(params))),
-                ('Alles auf Festplatte speichern', 'PlayMedia({0})'.format(
+                (ptva.getLocalizedString(31002).encode('UTF-8'), 'PlayMedia({0})'.format(build_url(params))),
+                (ptva.getLocalizedString(31003).encode('UTF-8'), 'PlayMedia({0})'.format(
                     build_url({param_cdir: lcdir, param_action: action_save_all})))]
             li.addContextMenuItems(context_menu, replaceItems=True)
         li.setInfo('video', params)
@@ -168,17 +165,12 @@ def create_listing(lcdir, cparent_id):
     
     
 def create_progress_dialog(progdialog, title, air_date, channel, kb_loaded, str_num_rec=None):
-    dtitle = 'Herunterladen von TV-Aufnahme'
+    dtitle = ptva.getLocalizedString(31004).encode('UTF-8')
     if str_num_rec is not None:
-        dtitle = 'Herunterladen von TV-Aufnahme {0}'.format(str_num_rec)
+        dtitle = ptva.getLocalizedString(31005).encode('UTF-8').format(str_num_rec)
     progdialog.create(
         dtitle,
-        '''
-        Titel: {0}
-        aufgenommen am {1}
-        von {2}
-        {3} kByte heruntgeladen
-        '''.format(title, air_date, channel, kb_loaded))
+        ptva.getLocalizedString(31006).encode('UTF-8').format(title, air_date, channel, kb_loaded))
 
 
 def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str_num_rec=None):
@@ -206,12 +198,8 @@ def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str
         yesno = False
         if show_blocking_dialogs:
             yesno = infodialog.yesno(
-                'TV-Aufnahme erneut herunterladen?',
-                '''
-                Soll Aufnahme {0}
-                von {2} am {1}
-                erneut heruntergeladen weden?
-                '''.format(title, air_date, channel))
+                ptva.getLocalizedString(31008).encode('UTF-8'),
+                ptva.getLocalizedString(31009).encode('UTF-8').format(title, air_date, channel))
         if not yesno:
             xbmc.log('Download of "{0}" from channel "{2}" recorded on {1} skipped.'.format(title, air_date, channel))
             return False
@@ -225,8 +213,8 @@ def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str
             for chunk in r.iter_content(1024 * chunk_size_kb):
                 if progdialog.iscanceled():
                     progdialog.close()
-                    yesno = infodialog.yesno('Herunterladen von TV-Aufnahme abbrechen',
-                                             'Soll herunterladen von {0} wirklich abgebrochen werde?'.format(title))
+                    yesno = infodialog.yesno(ptva.getLocalizedString(31010).encode('UTF-8'),
+                                             ptva.getLocalizedString(31011).encode('UTF-8').format(title).encode('UTF-8').strip())
                     if yesno:
                         canceled = True
                         break
@@ -243,22 +231,13 @@ def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str
         else:
             if show_blocking_dialogs:
                 infodialog.ok(
-                    'Herunterladen von TV-Aufnahme abgeschlossen',
-                    '''
-                    Herunterladen von {0} wurde erfolgreich beendet.
-                    Dateiname: {1}
-                    Größe: {2:,} kByte
-                    '''.format(title, file_name, downloaded))
+                    ptva.getLocalizedString(31012).encode('UTF-8'),
+                    ptva.getLocalizedString(31013).encode('UTF-8').format(title, file_name, downloaded))
             return True
     except IOError as ierr:
         infodialog.ok(
-            'Aufnahme herunterladen fehlgeschlagen',
-            '''
-            Herunterladen von Aufnahme {0}
-            in Datei {1}
-            ist fehlgeschlagen.
-            Fehler: {2}
-            '''.format(title, file_name, ierr.strerror))
+            ptva.getLocalizedString(31014).encode('UTF-8'),
+            ptva.getLocalizedString(31015).encode('UTF-8').format(title, file_name, ierr.strerror))
     return False
 
 
@@ -270,16 +249,13 @@ def save_all_videos(largs):
     except requests.RequestException as err:
         infodialog = xbmcgui.Dialog()
         infodialog.ok(
-            'Verbindung zu Panasonic TV fehlgeschlagen',
-            '''
-            Verbindung zu Panasonic TV mit Hostnamen {0} fehlgeschlagen.
-            {1}
-            '''.format(panatv_hostname, err))
+            ptva.getLocalizedString(31016).encode('UTF-8'),
+            ptva.getLocalizedString(31017).encode('UTF-8').format(panatv_hostname, err))
         return
     except BaseException as err:
         infodialog = xbmcgui.Dialog()
         infodialog.ok(
-            'Verarbeitung der Daten von Panasonic TV fehlgeschlagen',
+            ptva.getLocalizedString(31007).encode('UTF-8'),
             '''
             {0}
             '''.format(err))
@@ -294,8 +270,8 @@ def save_all_videos(largs):
             num_downloaded += 1
     infodialog = xbmcgui.Dialog()
     infodialog.ok(
-        'Herunterladen aller Aufnahmen abgeschlossen',
-        'Es wurden {0} von {1} Aufnahmen heruntergeladen.'.format(num_downloaded, len(ilist))
+        ptva.getLocalizedString(31019).encode('UTF-8'),
+        ptva.getLocalizedString(31020).encode('UTF-8').format(num_downloaded, len(ilist))
     )
 
 
