@@ -1,0 +1,29 @@
+# Kodi Media Center language file
+# Addon Name: Favourites script
+# Addon id: script.favourites
+# Addon Provider: ronie|`Black
+msgid ""
+msgstr ""
+"Project-Id-Version: XBMC Addons\n"
+"Report-Msgid-Bugs-To: noone\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Bernd\n"
+"Language-Team: German (http://www.transifex.com/projects/p/xbmc-addons/language/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#32000"
+msgid "settings_header"
+msgstr "Panasoniv TV Addon Einstellungen"
+
+msgctxt "#32011"
+msgid "panatv_hostname"
+msgstr "Hostname des Fernsehers"
+
+msgctxt "#32012"
+msgid "video_folder"
+msgstr "Verzeichnis für Videodateien"
