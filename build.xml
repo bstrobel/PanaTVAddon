@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="panatvaddon" default="all">
+
+
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!--
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <dirname property="module.panatvaddon.basedir" file="${ant.file}"/>
+
+    <property name="panatvaddon.output.dir" value="${module.panatvaddon.basedir}/dist"/>
+    <property name="panatvaddon.work.dir" value="${module.panatvaddon.basedir}/work"/>
+    <property name="plugin.name" value="PanaTVAddon"/>
+    <property name="panatvaddon.work.dir.plugin" value="${panatvaddon.work.dir}/${plugin.name}"/>
+    <!-- Module PanaTVAddon -->
+
+    <target name="create.zip.structure.panatvaddon" description="Create directory structure for zip file">
+        <copy todir="${panatvaddon.work.dir.plugin}">
+            <fileset dir="${module.panatvaddon.basedir}" includes="*.py addon.xml resources/Settings.xml resources/**/strings.po"/>
+        </copy>
+    </target>
+
+    <target name="zip.plugin.panatvaddon" depends="create.zip.structure.panatvaddon" description="Compile module PanaTVAddon">
+        <zip destfile="${panatvaddon.output.dir}/${plugin.name}.zip"
+             basedir="${panatvaddon.work.dir}/"
+             includes="${plugin.name}/**/*"
+        />
+    </target>
+
+    <target name="clean.module.panatvaddon" description="cleanup module">
+        <delete dir="${panatvaddon.output.dir}"/>
+        <delete dir="${panatvaddon.work.dir}"/>
+    </target>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean" depends="clean.module.panatvaddon" description="cleanup all"/>
+
+    <target name="build.modules" depends="init, clean, zip.plugin.panatvaddon" description="build all modules"/>
+
+    <target name="all" depends="build.modules" description="build all"/>
+</project>
