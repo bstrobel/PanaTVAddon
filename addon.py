@@ -214,7 +214,8 @@ def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str
                 if progdialog.iscanceled():
                     progdialog.close()
                     yesno = infodialog.yesno(ptva.getLocalizedString(31010).encode('UTF-8'),
-                                             ptva.getLocalizedString(31011).encode('UTF-8').format(title).encode('UTF-8').strip())
+                                             ptva.getLocalizedString(31011).encode('UTF-8')
+                                             .format(title).encode('UTF-8').strip())
                     if yesno:
                         canceled = True
                         break
