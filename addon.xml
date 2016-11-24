@@ -11,8 +11,11 @@
         <provides>video</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
-        <summary lang="en">Anzeige von Sendern und Aufnahmen eines Panasonic TV</summary>
-        <description lang="en">Ermoeglicht das Anzeigen von Programmen und Herunterladen von Aufnahmen.</description>
+        <summary lang="en">Panasonic TV Live TV and download of recordings</summary>
+        <description lang="en">Can display Live TV from a Panasonic TV. Downloads recordings to disk.</description>
         <disclaimer lang="en">(C) Bernd Strobel</disclaimer>
+        <summary lang="de">Panasonic TV Live TV und Aufnahmen herunterladen</summary>
+        <description lang="de">Ermoeglicht das Anzeigen von Programmen und Herunterladen von Aufnahmen.</description>
+        <disclaimer lang="de">(C) Bernd Strobel</disclaimer>
     </extension>
 </addon>
