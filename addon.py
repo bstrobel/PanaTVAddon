@@ -52,6 +52,10 @@ addon_handle = int(sys.argv[1])
 xbmc.log('{0}.handle={1}, myurl={2}'.format(__name__, addon_handle, myurl))
 
 
+def istr(i):
+    return ptva.getLocalizedString(i).encode('UTF-8')
+
+
 def build_url(query):
     return myurl + '?' + urllib.urlencode(query)
     
@@ -123,13 +127,13 @@ def create_listing(lcdir, cparent_id):
     except requests.RequestException as err:
         infodialog = xbmcgui.Dialog()
         infodialog.ok(
-            ptva.getLocalizedString(31000).encode('UTF-8'),
-            ptva.getLocalizedString(31001).encode('UTF-8').format(panatv_hostname, err))
+            istr(31000),
+            istr(31001).format(panatv_hostname, err))
         return
     except BaseException as err:
         infodialog = xbmcgui.Dialog()
         infodialog.ok(
-            ptva.getLocalizedString(31007).encode('UTF-8'),
+            istr(31007),
             '''
             {0}
             '''.format(err))
@@ -147,9 +151,11 @@ def create_listing(lcdir, cparent_id):
         li = xbmcgui.ListItem(label=item_props['title'], path=params[param_video_url])
         if params[param_ctype] == param_val_ctype_rec:
             context_menu = [
-                (ptva.getLocalizedString(31002).encode('UTF-8'), 'PlayMedia({0})'.format(build_url(params))),
-                (ptva.getLocalizedString(31003).encode('UTF-8'), 'PlayMedia({0})'.format(
-                    build_url({param_cdir: lcdir, param_action: action_save_all})))]
+                (istr(31003), 'PlayMedia({0})'.format(
+                    build_url({param_cdir: lcdir, param_action: action_save_all}))),
+                (istr(31002), 'PlayMedia({0})'.format(build_url(params))),
+                (istr(31021), 'Addon.OpenSettings({0})'.format(ptva.getAddonInfo('id')))
+            ]
             li.addContextMenuItems(context_menu, replaceItems=True)
         li.setInfo('video', params)
         li.setContentLookup(False)  # needed for Panasonic TV because it gets confused by the HEAD requests
@@ -165,12 +171,12 @@ def create_listing(lcdir, cparent_id):
     
     
 def create_progress_dialog(progdialog, title, air_date, channel, kb_loaded, str_num_rec=None):
-    dtitle = ptva.getLocalizedString(31004).encode('UTF-8')
+    dtitle = istr(31004)
     if str_num_rec is not None:
-        dtitle = ptva.getLocalizedString(31005).encode('UTF-8').format(str_num_rec)
+        dtitle = istr(31005).format(str_num_rec)
     progdialog.create(
         dtitle,
-        ptva.getLocalizedString(31006).encode('UTF-8').format(title, air_date, channel, kb_loaded))
+        istr(31006).format(title, air_date, channel, kb_loaded))
 
 
 def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str_num_rec=None):
@@ -198,8 +204,8 @@ def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str
         yesno = False
         if show_blocking_dialogs:
             yesno = infodialog.yesno(
-                ptva.getLocalizedString(31008).encode('UTF-8'),
-                ptva.getLocalizedString(31009).encode('UTF-8').format(title, air_date, channel))
+                istr(31008),
+                istr(31009).format(title, air_date, channel))
         if not yesno:
             xbmc.log('Download of "{0}" from channel "{2}" recorded on {1} skipped.'.format(title, air_date, channel))
             return False
@@ -213,8 +219,8 @@ def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str
             for chunk in r.iter_content(1024 * chunk_size_kb):
                 if progdialog.iscanceled():
                     progdialog.close()
-                    yesno = infodialog.yesno(ptva.getLocalizedString(31010).encode('UTF-8'),
-                                             ptva.getLocalizedString(31011).encode('UTF-8')
+                    yesno = infodialog.yesno(istr(31010),
+                                             istr(31011)
                                              .format(title).encode('UTF-8').strip())
                     if yesno:
                         canceled = True
@@ -223,7 +229,7 @@ def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str
                         create_progress_dialog(progdialog, title, air_date, channel, downloaded, str_num_rec)
                 fd.write(chunk)
                 downloaded += chunk_size_kb
-                progdialog.update(0, line3='{0:,} kByte loaded'.format(downloaded))
+                progdialog.update(0, line3=istr(31022).format(downloaded))
             progdialog.close()
         if canceled:
             xbmc.log('Download canceled. Deleting file.')
@@ -232,13 +238,13 @@ def save_video(largs, show_blocking_dialogs=True, largs_value_is_array=True, str
         else:
             if show_blocking_dialogs:
                 infodialog.ok(
-                    ptva.getLocalizedString(31012).encode('UTF-8'),
-                    ptva.getLocalizedString(31013).encode('UTF-8').format(title, file_name, downloaded))
+                    istr(31012),
+                    istr(31013).format(title, file_name, downloaded))
             return True
     except IOError as ierr:
         infodialog.ok(
-            ptva.getLocalizedString(31014).encode('UTF-8'),
-            ptva.getLocalizedString(31015).encode('UTF-8').format(title, file_name, ierr.strerror))
+            istr(31014),
+            istr(31015).format(title, file_name, ierr.strerror))
     return False
 
 
@@ -250,13 +256,13 @@ def save_all_videos(largs):
     except requests.RequestException as err:
         infodialog = xbmcgui.Dialog()
         infodialog.ok(
-            ptva.getLocalizedString(31016).encode('UTF-8'),
-            ptva.getLocalizedString(31017).encode('UTF-8').format(panatv_hostname, err))
+            istr(31016),
+            istr(31017).format(panatv_hostname, err))
         return
     except BaseException as err:
         infodialog = xbmcgui.Dialog()
         infodialog.ok(
-            ptva.getLocalizedString(31007).encode('UTF-8'),
+            istr(31007),
             '''
             {0}
             '''.format(err))
@@ -271,8 +277,8 @@ def save_all_videos(largs):
             num_downloaded += 1
     infodialog = xbmcgui.Dialog()
     infodialog.ok(
-        ptva.getLocalizedString(31019).encode('UTF-8'),
-        ptva.getLocalizedString(31020).encode('UTF-8').format(num_downloaded, len(ilist))
+        istr(31019),
+        istr(31020).format(num_downloaded, len(ilist))
     )
 
 

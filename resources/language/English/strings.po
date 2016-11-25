@@ -109,3 +109,11 @@ msgstr ""
 msgctxt "#31020"
 msgid "{0} of {1} recordings downloaded."
 msgstr ""
+
+msgctxt "#31021"
+msgid "Panasonic TV Settings"
+msgstr ""
+
+msgctxt "#31022"
+msgid "{0:,} kByte loaded"
+msgstr ""
